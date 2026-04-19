@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公開フォーマット一覧 - 推しポフォ</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 一覧ページ固有の追加スタイル */
+    .list-page { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; min-height: 100vh; background: var(--bg); }
+    .list-header { width: 100%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .list-title { font-size: 24px; font-weight: 700; color: var(--text); }
+    .back-btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text2); font-weight: 600; font-size: 14px; padding: 8px 16px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); transition: all 0.2s; }
+    .back-btn:hover { background: var(--surface2); color: var(--text); }
+    .card-grid { width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .portfolio-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 12px; transition: transform 0.2s, box-shadow 0.2s; }
+    .portfolio-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-color: var(--border2); }
+    .card-title { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-meta { font-size: 12px; color: var(--text3); display: flex; flex-direction: column; gap: 4px; }
+    .card-actions { margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+    .card-btn { padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: background 0.15s, color 0.15s; }
+    .card-btn.use { background: #d97706; color: white; }
+    .card-btn.use:hover { opacity: 0.85; }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); grid-column: 1 / -1; }
+    .loading-state { text-align: center; padding: 60px 20px; color: var(--text3); grid-column: 1 / -1; }
+  </style>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <div class="list-page">
+    <div class="list-header">
+      <h1 class="list-title">公開フォーマットを探す</h1>
+      <a href="index.html" class="back-btn" id="backBtn">
+        ← 戻る
+      </a>
+    </div>
+
+    <div class="card-grid" id="cardGrid">
+      <div class="loading-state">読み込み中...</div>
+    </div>
+  </div>
+
+  <script src="formats.js"></script>
+</body>
+</html>
