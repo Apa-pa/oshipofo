@@ -454,6 +454,96 @@ function bindListEvents() {
   });
 }
 
+// ── Sort by ratio ─────────────────────────────────────────────────────────────
+// カテゴリと子カテゴリを割合の大きい順に並べ替える
+function sortByRatio() {
+  // 親カテゴリを降順にソート
+  categories.sort((a, b) => b.ratio - a.ratio);
+  // 各カテゴリの子も降順にソート
+  categories.forEach(cat => {
+    if (cat.children && cat.children.length > 0) {
+      cat.children.sort((a, b) => b.ratio - a.ratio);
+    }
+  });
+  refresh();
+}
+
+// ── Auto adjust to 100% ──────────────────────────────────────────────────────
+function autoAdjust() {
+  if (categories.length === 0) return;
+
+  // 1. 親カテゴリの調整
+  adjustArrayTo100(categories);
+
+  // 2. 各カテゴリの子カテゴリ（内訳）の調整
+  categories.forEach(cat => {
+    if (cat.children && cat.children.length > 0) {
+      adjustArrayTo100(cat.children);
+    }
+  });
+
+  refresh();
+}
+
+/**
+ * 配列内の各要素の ratio の合計が 100 になるように調整する
+ * @param {Array} arr {ratio: number} を持つオブジェクトの配列
+ */
+function adjustArrayTo100(arr) {
+  if (!arr || arr.length === 0) return;
+
+  const currentTotal = arr.reduce((s, item) => s + item.ratio, 0);
+  if (currentTotal === 100) return;
+
+  if (currentTotal === 0) {
+    // 全て0の場合は均等に割り振る
+    const base = Math.floor(100 / arr.length);
+    const rem = 100 % arr.length;
+    arr.forEach((item, i) => {
+      item.ratio = base + (i < rem ? 1 : 0);
+    });
+    return;
+  }
+
+  // 倍率で調整を試みる
+  const factor = 100 / currentTotal;
+  let newTotal = 0;
+  
+  arr.forEach(item => {
+    item.ratio = Math.round(item.ratio * factor);
+    newTotal += item.ratio;
+  });
+
+  // 端数調整（誤差を埋める）
+  let diff = 100 - newTotal;
+  if (diff !== 0) {
+    // 差分がある場合、値が大きい順（減らす場合）または小さい順（増やす場合）に調整したいが、
+    // ここではシンプルにインデックス順または比率の大きい順に1ずつ加減する
+    const sorted = [...arr].sort((a, b) => b.ratio - a.ratio);
+    for (let i = 0; i < Math.abs(diff); i++) {
+      const target = sorted[i % sorted.length];
+      if (diff > 0) {
+        target.ratio++;
+      } else {
+        if (target.ratio > 0) {
+          target.ratio--;
+        } else {
+          // 0以下の場合はスキップして次を探す
+          let found = false;
+          for(let j = 0; j < sorted.length; j++) {
+            if(sorted[j].ratio > 0) {
+              sorted[j].ratio--;
+              found = true;
+              break;
+            }
+          }
+          if(!found) break; // 全て0ならどうしようもない
+        }
+      }
+    }
+  }
+}
+
 // ── Add category ──────────────────────────────────────────────────────────────
 function addCategory() {
   const input = document.getElementById('addInput');
@@ -683,6 +773,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('addInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') addCategory();
   });
+  document.getElementById('sortBtn').addEventListener('click', sortByRatio);
+  document.getElementById('adjustBtn').addEventListener('click', autoAdjust);
   
   document.getElementById('exportBtn').addEventListener('click', exportImage);
   document.getElementById('saveDataBtn').addEventListener('click', savePortfolio);

@@ -200,6 +200,40 @@ body {
   min-height: 20px;
 }
 
+/* ツールバー（割合順ソート・自動調整など） */
+.sort-bar {
+  padding: 0 16px 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sort-btn, .adjust-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sort-btn:hover, .adjust-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.sort-btn:active, .adjust-btn:active {
+  transform: scale(0.97);
+}
+
 /* Category list */
 .cat-list {
   flex: 1;
