@@ -244,6 +244,8 @@ function renderMainChart() {
         legend: { display: false },
         datalabels: {
           color: '#FFFFFF',
+          textStrokeColor: '#000000',
+          textStrokeWidth: 0.5,
           font: { size: 11, weight: '700', family: '"DM Sans", sans-serif' },
           textAlign: 'center',
           display: ctx => {
@@ -307,6 +309,8 @@ function openDrill(catId) {
         legend: { display: false },
         datalabels: {
           color: '#FFFFFF',
+          textStrokeColor: '#000000',
+          textStrokeWidth: 0.5,
           font: { size: 11, weight: '700', family: '"DM Sans", sans-serif' },
           textAlign: 'center',
           display: ctx => {
@@ -827,10 +831,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const sidebar = document.getElementById('sidebar');
-  document.getElementById('editFab').addEventListener('click', () => {
+  const openEditor = () => {
     sidebar.classList.add('editing');
     sidebar.scrollTop = 0;
-  });
+  };
+  document.getElementById('editFab').addEventListener('click', openEditor);
+  document.getElementById('mobileEditBtn').addEventListener('click', openEditor);
   document.getElementById('sidebarClose').addEventListener('click', () => {
     sidebar.classList.remove('editing');
   });

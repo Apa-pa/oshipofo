@@ -830,8 +830,29 @@ input[type=range] {
   text-decoration: underline;
 }
 
+.site-footer {
+  padding: 24px 20px 28px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text3);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.site-footer a {
+  color: var(--text2);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
 /* 笏笏 繝｢繝舌う繝ｫ蟆ら畑繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ医ョ繧ｹ繧ｯ繝医ャ繝励〒縺ｯ髱櫁｡ｨ遉ｺ・俄楳笏 */
 .sidebar-close,
+.mobile-edit-btn,
 .edit-fab { display: none; }
 
 /* 笏笏 Responsive 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
@@ -890,6 +911,31 @@ input[type=range] {
   .main {
     padding: 24px 16px 120px;
     min-height: 100svh;
+  }
+
+  .mobile-edit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: min(340px, calc(100vw - 32px));
+    margin: 0 auto 16px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 22px;
+    padding: 12px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.16);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .mobile-edit-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.14);
   }
 
   /* 繝√Ε繝ｼ繝医し繧､繧ｺ */
