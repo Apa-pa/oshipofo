@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -109,7 +109,7 @@ body {
 
 .title-input:focus { border-bottom-color: var(--accent); }
 
-/* 名前入力欄 */
+/* 蜷榊燕蜈･蜉帶ｬ・*/
 .name-input {
   width: 100%;
   font-family: 'DM Sans', sans-serif;
@@ -128,7 +128,7 @@ body {
 .name-input::placeholder { color: var(--text3); }
 .name-input:focus { border-bottom-color: var(--accent); }
 
-/* グラフ上のユーザー名表示 */
+/* 繧ｰ繝ｩ繝穂ｸ翫・繝ｦ繝ｼ繧ｶ繝ｼ蜷崎｡ｨ遉ｺ */
 .username-display {
   text-align: center;
   font-size: 13px;
@@ -200,7 +200,7 @@ body {
   min-height: 20px;
 }
 
-/* ツールバー（割合順ソート・自動調整など） */
+/* 繝・・繝ｫ繝舌・・亥牡蜷磯・た繝ｼ繝医・閾ｪ蜍戊ｪｿ謨ｴ縺ｪ縺ｩ・・*/
 .sort-bar {
   padding: 0 16px 8px;
   display: flex;
@@ -676,6 +676,147 @@ input[type=range] {
 }
 .export-btn:hover { opacity: 0.85; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
 
+.x-share-btn {
+  background: #111111;
+  color: white;
+}
+.x-share-btn:hover { background: #222222; box-shadow: 0 4px 12px rgba(0,0,0,0.16); }
+
+.howto-btn {
+  border: 1px solid var(--border2);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.78);
+  color: var(--text2);
+  padding: 6px 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.howto-btn:hover {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.intro-modal[hidden] {
+  display: none;
+}
+
+.intro-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+}
+
+.intro-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 24, 20, 0.42);
+  backdrop-filter: blur(4px);
+}
+
+.intro-dialog {
+  position: relative;
+  width: min(520px, calc(100vw - 32px));
+  margin: min(12vh, 80px) auto 0;
+  background: linear-gradient(180deg, #fffdf8 0%, #f7f3ea 100%);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+  padding: 28px 24px 24px;
+}
+
+.intro-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.intro-progress {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.intro-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(42, 37, 32, 0.18);
+}
+
+.intro-dot.active {
+  width: 28px;
+  background: var(--accent);
+}
+
+.intro-page {
+  display: none;
+}
+
+.intro-page.active {
+  display: block;
+}
+
+.intro-actions {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.intro-nav {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.intro-skip,
+.intro-secondary,
+.intro-start {
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.intro-skip {
+  background: transparent;
+  color: var(--text2);
+}
+
+.intro-secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.intro-start {
+  min-width: 124px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.intro-start:hover {
+  opacity: 0.9;
+}
+
 .list-link {
   font-size: 13px;
   font-weight: 500;
@@ -689,17 +830,17 @@ input[type=range] {
   text-decoration: underline;
 }
 
-/* ── モバイル専用コンポーネント（デスクトップでは非表示）── */
+/* 笏笏 繝｢繝舌う繝ｫ蟆ら畑繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ医ョ繧ｹ繧ｯ繝医ャ繝励〒縺ｯ髱櫁｡ｨ遉ｺ・俄楳笏 */
 .sidebar-close,
 .edit-fab { display: none; }
 
-/* ── Responsive ─────────────────────────────────────────────── */
+/* 笏笏 Responsive 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 @media (max-width: 768px) {
 
-  /* グリッドは1カラム。サイドバーはfixedで管理するのでmainが全幅を使う */
+  /* 繧ｰ繝ｪ繝・ラ縺ｯ1繧ｫ繝ｩ繝縲ゅし繧､繝峨ヰ繝ｼ縺ｯfixed縺ｧ邂｡逅・☆繧九・縺ｧmain縺悟・蟷・ｒ菴ｿ縺・*/
   .app { grid-template-columns: 1fr; }
 
-  /* ── サイドバー：全画面スライドドロワー ── */
+  /* 笏笏 繧ｵ繧､繝峨ヰ繝ｼ・壼・逕ｻ髱｢繧ｹ繝ｩ繧､繝峨ラ繝ｭ繝ｯ繝ｼ 笏笏 */
   .sidebar {
     position: fixed;
     inset: 0;
@@ -707,24 +848,24 @@ input[type=range] {
     overflow-x: hidden;
     overflow-y: auto;
     border-right: none;
-    /* 画面下に隠す */
+    /* 逕ｻ髱｢荳九↓髫縺・*/
     transform: translateY(100%);
     transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
   }
 
-  /* 編集モード時：全画面に展開 */
+  /* 邱ｨ髮・Δ繝ｼ繝画凾・壼・逕ｻ髱｢縺ｫ螻暮幕 */
   .sidebar.editing {
     transform: translateY(0);
   }
 
-  /* ── サイドバーヘッダー（モバイル）── */
+  /* 笏笏 繧ｵ繧､繝峨ヰ繝ｼ繝倥ャ繝繝ｼ・医Δ繝舌う繝ｫ・俄楳笏 */
   .sidebar-header {
     display: flex;
     flex-direction: column;
     padding: 16px 20px 16px;
   }
 
-  /* 「完了」ボタン */
+  /* 縲悟ｮ御ｺ・阪・繧ｿ繝ｳ */
   .sidebar-close {
     display: flex;
     align-items: center;
@@ -745,13 +886,13 @@ input[type=range] {
 
   .sidebar-close:active { opacity: 0.75; }
 
-  /* ── メインエリア ── */
+  /* 笏笏 繝｡繧､繝ｳ繧ｨ繝ｪ繧｢ 笏笏 */
   .main {
     padding: 24px 16px 120px;
     min-height: 100svh;
   }
 
-  /* チャートサイズ */
+  /* 繝√Ε繝ｼ繝医し繧､繧ｺ */
   .chart-panel,
   .chart-container {
     width: min(340px, calc(100vw - 32px));
@@ -762,7 +903,7 @@ input[type=range] {
   .chart-container.small { width: 220px; height: 220px; }
   .legend-panel { width: min(340px, calc(100vw - 32px)); }
 
-  /* ── FABボタン（編集ボタン）── */
+  /* 笏笏 FAB繝懊ち繝ｳ・育ｷｨ髮・・繧ｿ繝ｳ・俄楳笏 */
   .edit-fab {
     display: flex;
     align-items: center;
@@ -789,3 +930,11 @@ input[type=range] {
     box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   }
 }
+
+
+
+
+
+
+
+

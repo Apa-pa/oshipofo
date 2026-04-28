@@ -1,171 +1,141 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>my推しポートフォリオ（推しポフォ）</title>
+  <title>my推しポフォ | 推しポフォ</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <!-- Firebase SDK (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
 </head>
-
 <body>
-
   <div class="app">
-
-    <!-- Left Panel -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <!-- モバイルのみ表示される「完了」ボタン -->
         <button class="sidebar-close" id="sidebarClose" aria-label="編集を閉じる">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
           </svg>
-          完了
+          閉じる
         </button>
         <div class="logo"><span>推しポフォ</span></div>
-
-        <!-- モード切替タブ -->
         <div class="mode-tabs" id="modeTabs">
-          <button class="mode-tab active" data-mode="genre">ジャンル構成</button>
-          <button class="mode-tab" data-mode="works">my推し作品</button>
+          <button class="mode-tab active" data-mode="genre">ジャンル別</button>
+          <button class="mode-tab" data-mode="works">作品別</button>
         </div>
-
-        <input class="title-input" id="titleInput" value="my推しポートフォリオ" placeholder="タイトル" />
-        <input class="name-input" id="nameInput" placeholder="あなたの名前（例：あんな）" />
+        <input class="title-input" id="titleInput" value="my推しポフォ" placeholder="タイトル" />
+        <input class="name-input" id="nameInput" placeholder="あなたの名前（任意）" />
       </div>
-
       <div class="total-bar">
-        <span class="total-label">合計</span>
-        <div class="total-track">
-          <div class="total-fill" id="totalFill"></div>
-        </div>
+        <span class="total-label">TOTAL</span>
+        <div class="total-track"><div class="total-fill" id="totalFill"></div></div>
         <span class="total-num" id="totalNum">100%</span>
       </div>
       <div class="total-warn" id="totalWarn"></div>
-
-      <!-- 割合順に並べ替えボタン -->
       <div class="sort-bar">
-        <button class="sort-btn" id="sortBtn" title="割合の大きい順に並べ替える">
+        <button class="sort-btn" id="sortBtn" title="比率の大きい順に並べ替える">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
             <path d="M2 3h9M2 6.5h6M2 10h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
             <path d="M10 6v5.5M10 11.5l-1.5-1.5M10 11.5l1.5-1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          割合順に並べ替え
+          比率順に並べ替え
         </button>
         <button class="adjust-btn" id="adjustBtn" title="合計が100%になるよう自動調整する">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-            <path d="M2 6.5h9M6.5 2v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M6.5 2v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           100%に自動調整
         </button>
       </div>
-
       <div class="cat-list" id="catList"></div>
-
       <div class="add-area">
         <input class="add-input" id="addInput" placeholder="カテゴリを追加..." />
         <button class="add-btn" id="addBtn">+</button>
       </div>
     </aside>
 
-    <!-- Right Panel -->
     <main class="main">
       <div id="exportTarget" class="export-target">
         <div class="chart-panel">
-          <!-- ユーザー名表示（名前入力時のみ表示） -->
           <div class="username-display" id="usernameDisplay"></div>
-          <div class="chart-hint" id="chartHint" data-html2canvas-ignore="true">詳細がある項目をクリックで内訳表示</div>
+          <div class="chart-hint" id="chartHint" data-html2canvas-ignore="true">詳しい内訳はクリックで表示</div>
           <div class="chart-container" id="chartContainer">
-            <canvas id="mainChart" role="img" aria-label="推しポートフォリオ円グラフ"></canvas>
-            <div class="chart-center" id="chartCenter">
-              <div class="center-title" id="centerTitle">my推し<br>ポートフォリオ</div>
-            </div>
+            <canvas id="mainChart" role="img" aria-label="推しポフォのグラフ"></canvas>
+            <div class="chart-center" id="chartCenter"><div class="center-title" id="centerTitle">my推し<br>ポフォ</div></div>
           </div>
-
-          <!-- Drill panel -->
           <div class="drill-panel" id="drillPanel">
             <button class="drill-back" id="drillBack">← 全体に戻る</button>
             <div class="drill-label" id="drillLabel"></div>
             <div class="chart-container small">
-              <canvas id="drillChart" role="img" aria-label="詳細円グラフ"></canvas>
-              <div class="chart-center">
-                <div class="center-title" id="drillCenterTitle"></div>
-              </div>
+              <canvas id="drillChart" role="img" aria-label="内訳グラフ"></canvas>
+              <div class="chart-center"><div class="center-title" id="drillCenterTitle"></div></div>
             </div>
           </div>
         </div>
+        <div class="legend-panel"><div class="legend-list" id="legendList"></div></div>
+      </div>
 
-        <div class="legend-panel">
-          <div class="legend-list" id="legendList"></div>
-        </div>
-      </div> <!-- /export-target -->
-
-      <!-- アクションボタンエリア（キャプチャ範囲外） -->
       <div class="action-panel">
+        <button class="howto-btn" id="howtoBtn" type="button" aria-label="使い方を見る">How to</button>
         <div class="action-buttons">
-          <button class="action-btn clear-btn" id="clearBtn" title="最初から作る">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2.5 3.5h11M5.5 3.5v-1a1 1 0 011-1h3a1 1 0 011 1v1m-6 0v10a1 1 0 001 1h5a1 1 0 001-1v-10"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            クリア
-          </button>
-
-          <button class="action-btn save-data-btn" id="saveDataBtn" title="状態を保存する">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M13 13.5H3a1 1 0 01-1-1v-9a1 1 0 011-1h7l4 4v6a1 1 0 01-1 1z" stroke="currentColor"
-                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M10 2.5v3a1 1 0 01-1 1H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <path d="M4 13.5v-4a1 1 0 011-1h6a1 1 0 011 1v4" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            作品を保存
-          </button>
-
-          <button class="action-btn export-btn" id="exportBtn" title="画像として保存">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1v9M5 7l3 3 3-3M2 12v2h12v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-            画像として保存
-          </button>
-
-          <button class="action-btn share-format-btn" id="shareFormatBtn" title="フォーマットを公開する">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M11 5V3a2 2 0 00-2-2H5a2 2 0 00-2 2v2M4 7h8a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2z"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            フォーマットを公開
-          </button>
+          <button class="action-btn clear-btn" id="clearBtn" title="初期状態に戻す"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 3.5h11M5.5 3.5v-1a1 1 0 011-1h3a1 1 0 011 1v1m-6 0v10a1 1 0 001 1h5a1 1 0 001-1v-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>クリア</button>
+          <button class="action-btn save-data-btn" id="saveDataBtn" title="現在の内容を保存する"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 13.5H3a1 1 0 01-1-1v-9a1 1 0 011-1h7l4 4v6a1 1 0 01-1 1z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M10 2.5v3a1 1 0 01-1 1H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M4 13.5v-4a1 1 0 011-1h6a1 1 0 011 1v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>保存する</button>
+          <button class="action-btn export-btn" id="exportBtn" title="画像として保存"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v2h12v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>画像として保存</button>
+          <button class="action-btn x-share-btn" id="shareXBtn" title="X.comで共有"><svg width="16" height="16" viewBox="0 0 1200 1227" fill="none" aria-hidden="true"><path d="M714.163 519.284L1160.89 0H1055.06L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.454 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.137 687.828L521.663 619.934L144.011 79.6944H306.615L611.443 515.779L658.917 583.673L1055.11 1150.79H892.506L569.137 687.854V687.828Z" fill="currentColor" /></svg>Xでシェア</button>
+          <button class="action-btn share-format-btn" id="shareFormatBtn" title="フォーマットを公開する"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 5V3a2 2 0 00-2-2H5a2 2 0 00-2 2v2M4 7h8a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>フォーマットを公開</button>
         </div>
-        <div style="display: flex; gap: 16px;">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
           <a href="formats.html" class="list-link">＞ 公開フォーマットを探す</a>
           <a href="list.html" class="list-link">＞ 保存済みの一覧を見る</a>
+          <a href="https://x.com" class="list-link" target="_blank" rel="noopener noreferrer">＞ X.com を開く</a>
         </div>
       </div>
-  </div>
-  </main>
+    </main>
   </div>
 
-  <!-- モバイル専用：編集FABボタン -->
-  <button class="edit-fab" id="editFab" aria-label="ポートフォリオを編集する">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-        stroke-linejoin="round" />
-    </svg>
-    編集する
-  </button>
+  <button class="edit-fab" id="editFab" aria-label="推しポフォを編集する"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>編集する</button>
+
+  <div class="intro-modal" id="introModal" hidden>
+    <div class="intro-backdrop" id="introBackdrop"></div>
+    <div class="intro-dialog" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+      <button class="intro-close" id="introClose" aria-label="説明を閉じる">×</button>
+      <div class="intro-progress" aria-label="チュートリアルの進行状況">
+        <span class="intro-dot active" data-step-indicator="0"></span>
+        <span class="intro-dot" data-step-indicator="1"></span>
+        <span class="intro-dot" data-step-indicator="2"></span>
+      </div>
+      <section class="intro-page active" data-step="0">
+        <p class="intro-eyebrow">Welcome</p>
+        <h2 class="intro-title" id="introTitle">推しポフォへようこそ</h2>
+        <p class="intro-text">あなたを充実させる推しのポートフォリオをつくって、自分の心を整理したり、SNSで共有できます。</p>
+        <p class="intro-text">ただのランク付けではなく、どれだけ大事にしているのかが一目でわかるのがポイントです。</p>
+      </section>
+      <section class="intro-page" data-step="1" aria-hidden="true">
+        <p class="intro-eyebrow">Share</p>
+        <h2 class="intro-title">画像保存からシェアまで</h2>
+        <p class="intro-text">共有するときは、まず画像を保存してから <code>Xでシェア</code> に進むのがおすすめです。</p>
+        <p class="intro-text">保存データはブラウザのローカルストレージを使うので、この端末であとから続きを編集できます。</p>
+      </section>
+      <section class="intro-page" data-step="2" aria-hidden="true">
+        <p class="intro-eyebrow">Format</p>
+        <h2 class="intro-title">フォーマットも使える</h2>
+        <p class="intro-text">たとえば推しコナン映画ポートフォリオのように、特定の作品をテーマにしたポートフォリオは、公開フォーマットがある場合があります。</p>
+        <p class="intro-text">フォーマットを探してすぐ始めることも、自分でつくったフォーマットを公開してほかの人に使ってもらうこともできます。</p>
+      </section>
+      <div class="intro-actions">
+        <button class="intro-skip" id="introSkip">すぐにはじめる</button>
+        <div class="intro-nav">
+          <button class="intro-secondary" id="introPrev" hidden>戻る</button>
+          <button class="intro-start" id="introNext">次へ</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
-
 </html>
+
+
